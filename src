@@ -152,33 +152,6 @@ export default App
 
 
 
-import {AiFillDelete} from 'react-icons/ai'
-import './index.css'
-
-const EachSong = props => {
-  const {songsDetails} = props
-  const {imageUrl, id, name, genre, duration} = songsDetails
-  return (
-    <li className="ordered-list">
-      <div className="image-container">
-        <img src={imageUrl} alt={name} className="image" />
-        <div className="content-container">
-          <p className="heading">{name}</p>
-          <p className="geners">{genre}</p>
-        </div>
-      </div>
-      <div className="delete-container">
-        <p className="duration">{duration}</p>
-        <AiFillDelete className="deleteLogo" />
-      </div>
-    </li>
-  )
-}
-
-export default EachSong
-
-
-
 * {
   box-sizing: border-box;
 }
@@ -192,9 +165,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.logo-image {
+.logo-container {
   height: 40vh;
   width: 100%;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-Edsheeran-bg.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 80px;
+  padding-bottom: 20px;
+  color: #ffffff;
+}
+.main-head {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .main-container {
@@ -230,6 +216,7 @@ body {
   background-color: transparent;
   padding: 5px;
   border-right: none;
+  color: #cbd5e1;
 }
 
 .searchIcon {
@@ -248,6 +235,38 @@ body {
   overflow-y: auto;
   height: 35vh;
 }
+
+
+
+import {AiTwotoneDelete} from 'react-icons/ai'
+import './index.css'
+
+const EachSong = props => {
+  const {songsDetails, onClickedDelete} = props
+  const {imageUrl, id, name, genre, duration} = songsDetails
+
+  const onClickDeleteButton = () => {
+    onClickedDelete(id)
+  }
+
+  return (
+    <li className="ordered-list">
+      <div className="image-container">
+        <img src={imageUrl} alt={name} className="image" />
+        <div className="content-container">
+          <p className="heading">{name}</p>
+          <p className="geners">{genre}</p>
+        </div>
+      </div>
+      <div className="delete-container">
+        <p className="duration">{duration}</p>
+        <AiTwotoneDelete className="deleteLogo" onClick={onClickDeleteButton} />
+      </div>
+    </li>
+  )
+}
+
+export default EachSong
 
 
 vvx
