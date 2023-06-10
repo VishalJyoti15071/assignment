@@ -1,308 +1,133 @@
 import {Component} from 'react'
-
-import {BiSearch} from 'react-icons/bi'
-
-import EachSong from './components/EachSong'
+import AllCountryList from './components/AllCountry'
+import VisitedCountryList from './components/VisitedCountry'
 import './App.css'
 
-const initialTracksList = [
+// This is the list (static data) used in the application. You can move it to any component if needed.
+
+const initialCountriesList = [
   {
-    id: '3b22e3fd-3d12-4ad1-9e38-90314219c4f4',
+    id: '53c9c67a-c923-4927-8a75-fdfc4bc5ec61',
+    name: 'Australia',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-perfect-img.png',
-    name: 'Perfect',
-    genre: 'Pop',
-    duration: '4:04',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-australia-img.png',
+    isVisited: false,
   },
   {
-    id: '40f97965-ff45-469e-a635-b2ef9f1642ed',
+    id: '8baa8029-fb2c-4f06-bfcc-3dc9ad12b24d',
+    name: 'Canada',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-shape-of-you-img.png',
-    name: 'Shape of You',
-    genre: 'Divide',
-    duration: '4:24',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-canada-img.png',
+    isVisited: false,
   },
   {
-    id: '782f916b-4056-44ec-a95f-5115c3f84904',
+    id: '1b520f98-6548-41f3-816e-c8b887865172',
+    name: 'Greenland',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-visiting-hours.png',
-    name: 'Visiting Hours',
-    genre: 'Folk-Pop',
-    duration: '3:49',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-greenland-img.png',
+    isVisited: false,
   },
   {
-    id: 'fcf0dc77-3427-457c-9ee0-91b1dc39fece',
+    id: '25841996-fbfd-4554-add4-4c94082c8ccd',
+    name: 'India',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-shivers-img.png',
-    name: 'Shivers',
-    genre: 'Dance-Pop',
-    duration: '3:58',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-india-img.png',
+    isVisited: true,
   },
   {
-    id: '9c1bb890-d4d5-4edf-9d95-6959d716b442',
+    id: '603c3568-13b0-11ec-82a8-0242ac130003',
+    name: 'Netherlands',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-bad-habits-img.png',
-    name: 'Bad Habits',
-    genre: 'Dance-Pop',
-    duration: '4:01',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-netherland-img.png',
+    isVisited: false,
   },
   {
-    id: '2216db9c-647f-4814-b880-179740e4d748',
+    id: '3c988dec-55e1-477d-a9e2-b354fd559849',
+    name: 'Portugal',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-castle-on-the-hill-img.png',
-    name: 'Castle on the Hill',
-    genre: 'Pop&Rock',
-    duration: '4:48',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-portugal-img.png',
+    isVisited: false,
   },
   {
-    id: 'a5e30966-b760-4660-bf08-073135f7d010',
+    id: 'd766f754-34f7-413e-81ec-9992821b97fa',
+    name: 'Switzerland',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-happier-img.png',
-    name: 'Happier',
-    genre: 'Pop',
-    duration: '3:36',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-switzerland-img.png',
+    isVisited: false,
   },
   {
-    id: '2d5c9bc0-b8b0-41c6-aa55-cb3b659d8604',
+    id: '7ebb4e04-b124-417f-a69e-564a456d70f1',
+    name: 'Thailand',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-photograph-img.png',
-    name: 'Photograph',
-    genre: 'Folk music',
-    duration: '4:26',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-thailand-img.png',
+    isVisited: false,
   },
   {
-    id: 'efd3d621-2c05-4941-acdc-0a1a0786bc53',
+    id: '1e4b1dcd-6ace-4dde-ad8d-675927d5ae47',
+    name: 'United Kingdom',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-galway-girl-img.png',
-    name: 'Galway Girl',
-    genre: 'Pop',
-    duration: '3:20',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-united-kingdom-img.png',
+    isVisited: true,
   },
   {
-    id: 'e4b8e3b8-7776-4c09-8abc-ba328a8babe9',
+    id: 'e76da8ca-bc48-4981-902b-a4d2d46feb6d',
+    name: 'Venezuela',
     imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-i-dont-care-img.png',
-    name: "I Don't Care",
-    genre: 'Pop',
-    duration: '3:38',
+      'https://assets.ccbp.in/frontend/react-js/visit-countries-venezuela-img.png',
+    isVisited: false,
   },
 ]
 
 // Replace your code here
 class App extends Component {
-  state = {inputValues: '', searchedTrackList: initialTracksList}
-
-  onChangeClicked = event => {
-    this.setState({inputValues: event.target.value})
+  state = {
+    visitedCountryList: [],
+    isVisitedPlace: initialCountriesList.isVisited,
   }
 
-  onclickedInputValue = () => {
-    const {inputValues, searchedTrackList} = this.state
-    const filterdList = searchedTrackList.filter(eachItem =>
-      eachItem.name.includes(inputValues),
-    )
-    return filterdList
+  onClickedVisit = currentId => {
+    const clicked = initialCountriesList.filter(each => each.id === currentId)
+    return this.setState({isVisitedPlace: true})
   }
 
-  onClickedDelete = deleteId => {
-    const {searchedTrackList} = this.state
-    const filterdDeleteList = searchedTrackList.filter(
-      each => each.id !== deleteId,
+  renderedVisitedList = () => {
+    const resultOfList = initialCountriesList.filter(
+      each => each.isVisited === true,
     )
-    this.setState({searchedTrackList: filterdDeleteList})
+    return resultOfList
   }
 
   render() {
-    const filterdList = this.onclickedInputValue()
+    const resultOfList = this.renderedVisitedList()
+    const {visitedCountryList} = this.state
+
     return (
       <div className="main-container">
-        <div className="logo-container">
-          <h1 className="main-head">Ed Sheeran</h1>
-          <p className="main-para">Singer</p>
-        </div>
-        <div className="card-container">
-          <div className="header-container">
-            <h1 className="main-heading">Songs Playlist</h1>
-            <div className="input-container">
-              <input
-                className="input"
-                placeholder="Search"
-                type="search"
-                onChange={this.onChangeClicked}
-              />
-              <BiSearch className="searchIcon" />
-            </div>
-          </div>
-          <ul className="songs-container">
-            {filterdList.map(eachSong => (
-              <EachSong
-                songsDetails={eachSong}
-                onClickedDelete={this.onClickedDelete}
-              />
-            ))}
-          </ul>
-        </div>
+        <div className="main-heading">Countries</div>
+        <ul className="top-container">
+          {initialCountriesList.map(eachCountry => (
+            <AllCountryList
+              countryDetails={eachCountry}
+              key={eachCountry.id}
+              onClickedVisit={this.onClickedVisit}
+            />
+          ))}
+        </ul>
+        <div className="main-heading">Visited Countries</div>
+        <ul className="bottom-container">
+          {resultOfList.map(eachVisit => (
+            <VisitedCountryList
+              visitedCountryDetails={eachVisit}
+              key={eachVisit.id}
+            />
+          ))}
+        </ul>
       </div>
     )
   }
 }
-
 export default App
 
-
-
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.logo-container {
-  height: 40vh;
-  width: 100%;
-  background-image: url('https://assets.ccbp.in/frontend/react-js/music-playlist/music-playlist-Edsheeran-bg.png');
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 80px;
-  padding-bottom: 20px;
-  color: #ffffff;
-}
-.main-head {
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
-.main-container {
-  background-color: #152850;
-  height: 100vh;
-  font-family: 'Roboto';
-}
-.main-heading {
-  font-size: 30px;
-  color: #ffffff;
-}
-
-.card-container {
-  padding: 50px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.header-container {
-  display: flex;
-  padding-left: 40px;
-  padding-right: 40px;
-  justify-content: space-between;
-}
-
-.input-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.input {
-  padding-left: 10px;
-  border: 1px solid #cbd5e1;
-  background-color: transparent;
-  padding: 5px;
-  border-right: none;
-  color: #cbd5e1;
-}
-
-.searchIcon {
-  border: 1px solid #cbd5e1;
-  background-color: transparent;
-  padding: 5px;
-  height: 27px;
-  width: 27px;
-  border-left: none;
-  color: #cbd5e1;
-}
-
-.songs-container {
-  width: 85vw;
-  color: #ffffff;
-  overflow-y: auto;
-  height: 35vh;
-}
-
-
-
-import {AiTwotoneDelete} from 'react-icons/ai'
-import './index.css'
-
-const EachSong = props => {
-  const {songsDetails, onClickedDelete} = props
-  const {imageUrl, id, name, genre, duration} = songsDetails
-
-  const onClickDeleteButton = () => {
-    onClickedDelete(id)
-  }
-
-  return (
-    <li className="ordered-list">
-      <div className="image-container">
-        <img src={imageUrl} alt={name} className="image" />
-        <div className="content-container">
-          <p className="heading">{name}</p>
-          <p className="geners">{genre}</p>
-        </div>
-      </div>
-      <div className="delete-container">
-        <p className="duration">{duration}</p>
-        <AiTwotoneDelete className="deleteLogo" onClick={onClickDeleteButton} />
-      </div>
-    </li>
-  )
-}
-
-export default EachSong
-
-
-vvx
-.ordered-list {
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-left: 0;
-  padding-left: 0;
-}
-.image-container {
-  display: flex;
-}
-
-.image {
-  height: 100px;
-  width: 150px;
-  margin-right: 20px;
-}
-
-.delete-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.duration {
-  margin-right: 40px;
-}
-
-.deleteLogo {
-  background-color: transparent;
-  margin-right: 20px;
-}
-
-.geners {
-  color: #3b82f6;
-}
+//  this.setState(preState => ({
+//     visitedCountryList: [...preState.visitedCountryList, resultOfListS],
+//    }))
