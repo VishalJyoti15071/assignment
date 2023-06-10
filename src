@@ -131,3 +131,174 @@ export default App
 //  this.setState(preState => ({
 //     visitedCountryList: [...preState.visitedCountryList, resultOfListS],
 //    }))
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main-container {
+  color: #f8fafc;
+  background-color: #161624;
+  padding: 50px;
+  padding-top: 20px;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Roboto';
+  font-size: 14px;
+}
+.bottom-container {
+  list-style: none;
+  width: 90vw;
+
+  padding-left: 0px;
+  display: flex;
+}
+.top-container {
+  list-style: none;
+  width: 90vw;
+  height: 30vh;
+  border: 1px solid #334155;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  overflow-y: scroll;
+  padding-left: 0px;
+}
+
+.main-heading {
+  font-size: 25px;
+}
+
+
+
+import './index.css'
+
+const AllCountryList = props => {
+  const {countryDetails, onClickedVisit} = props
+  const {name, isVisited, id} = countryDetails
+
+  const onClickVisited = () => {
+    onClickedVisit(id)
+  }
+
+  const visitedOrNot = isVisited ? 'Visited' : 'Visit'
+
+  return (
+    <li className="orderedList">
+      <p className="name-para">{name}</p>
+      <button
+        className={` ${visitedOrNot}`}
+        type="submit"
+        onClick={onClickVisited}
+      >
+        {visitedOrNot}
+      </button>
+    </li>
+  )
+}
+
+export default AllCountryList
+
+
+.orderedList {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f1f2f;
+  padding-left: 30px;
+  border: 1px solid #334155;
+}
+
+.Visit {
+  height: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-right: 30px;
+  color: #ffffff;
+  background-color: #3b82f6;
+  border-radius: 4px;
+  border: none;
+}
+
+.Visited {
+  background-color: transparent;
+  border: none;
+  margin-right: 30px;
+  color: #94a3b8;
+}
+
+
+
+import './index.css'
+
+const VisitedCountryList = props => {
+  const {visitedCountryDetails} = props
+  const {name, id, imageUrl, isVisited} = visitedCountryDetails
+
+  return (
+    <li className="orderedVisitList">
+      <img src={imageUrl} alt="thumbnail" className="country-Image" />
+      <div className="bottom-visit-container">
+        <p className="countryName">{name}</p>
+        <button
+          className="button"
+          type="button"
+          // onClick={onClickRemoveButton}
+        >
+          Remove
+        </button>
+      </div>
+    </li>
+  )
+}
+
+export default VisitedCountryList
+
+
+
+.country-Image {
+  height: 100px;
+  width: 100%;
+}
+
+.orderedVisitList {
+  display: flex;
+  flex-direction: column;
+  width: 28vw;
+  background-color: #1f1f2f;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.bottom-visit-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.countryName {
+  font-size: 13px;
+  color: #f1f5f9;
+}
+
+.button {
+  color: #f1f5f9;
+  font-size: 11px;
+  background-color: #161624;
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  padding: 4px;
+}
