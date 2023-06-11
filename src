@@ -36,7 +36,7 @@ const tagsList = [
 
 // Replace your code here
 class App extends Component {
-  state = {taskList: [], inputTask: '', selectedTag: ''}
+  state = {taskList: [], inputTask: '', selectedTag: '', filteredList: []}
 
   onChageTaskInput = event => {
     this.setState({inputTask: event.target.value})
@@ -45,7 +45,6 @@ class App extends Component {
   onChangeSelectedTag = event => {
     const {selectedTag} = this.state
     this.setState({selectedTag: event.target.value})
-    console.log(selectedTag)
   }
 
   onClickSubmit = event => {
@@ -60,6 +59,17 @@ class App extends Component {
     this.setState(prevState => ({
       taskList: [...prevState.taskList, updateTask],
       inputTask: '',
+    }))
+  }
+
+  onClickTagButton = tagId => {
+    const {taskList} = this.state
+    this.setState(prevState => ({
+      taskList: prevState.taskList.map(each => {
+        if (each.optionId === tagId) {
+          return each
+        }
+      }),
     }))
   }
 
@@ -83,17 +93,16 @@ class App extends Component {
           <label htmlFor="tageCategory" className="label">
             Tags
           </label>
-          <select id="tageCategory" className="input">
-            <option onChange={this.onChangeSelectedTag} value="Health">
-              Health
-            </option>
-            <option onChange={this.onChangeSelectedTag} value="Education">
-              Education
-            </option>
-            <option>Entertainment</option>
-            <option>Sport</option>
-            <option>Travel</option>
-            <option>Others</option>
+          <select
+            id="tageCategory"
+            className="input"
+            onChange={this.onChangeSelectedTag}
+          >
+            {tagsList.map(eachTag => (
+              <option key={eachTag.optionId} value={eachTag.displayText}>
+                {eachTag.displayText}
+              </option>
+            ))}
           </select>
           <button className="Add-button" type="submit">
             Add Task
