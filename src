@@ -231,16 +231,19 @@ body {
 
 
 
-
 import './index.css'
 
 const TagsButton = props => {
   const {tagButtonDetails, onClickTagButton} = props
   const {displayText, optionId} = tagButtonDetails
 
+  const buttonClickes = () => {
+    onClickTagButton(optionId)
+  }
+
   return (
     <li className="orderList">
-      <button className="clicked-button" type="button">
+      <button className="clicked-button" type="button" onClick={buttonClickes}>
         {displayText}
       </button>
     </li>
@@ -248,6 +251,7 @@ const TagsButton = props => {
 }
 
 export default TagsButton
+
 
 
 
