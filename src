@@ -1,136 +1,134 @@
 import {Component} from 'react'
-import AllCountryList from './components/AllCountry'
-import VisitedCountryList from './components/VisitedCountry'
+import {v4 as uuidv4} from 'uuid'
+import TagsButton from './components/Tags'
+import TasksLists from './components/Tasks'
+
 import './App.css'
 
-// This is the list (static data) used in the application. You can move it to any component if needed.
+// These are the lists used in the application. You can move them to any component needed.
 
-const initialCountriesList = [
+const tagsList = [
   {
-    id: '53c9c67a-c923-4927-8a75-fdfc4bc5ec61',
-    name: 'Australia',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-australia-img.png',
-    isVisited: false,
+    optionId: 'HEALTH',
+    displayText: 'Health',
   },
   {
-    id: '8baa8029-fb2c-4f06-bfcc-3dc9ad12b24d',
-    name: 'Canada',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-canada-img.png',
-    isVisited: false,
+    optionId: 'EDUCATION',
+    displayText: 'Education',
   },
   {
-    id: '1b520f98-6548-41f3-816e-c8b887865172',
-    name: 'Greenland',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-greenland-img.png',
-    isVisited: false,
+    optionId: 'ENTERTAINMENT',
+    displayText: 'Entertainment',
   },
   {
-    id: '25841996-fbfd-4554-add4-4c94082c8ccd',
-    name: 'India',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-india-img.png',
-    isVisited: true,
+    optionId: 'SPORTS',
+    displayText: 'Sports',
   },
   {
-    id: '603c3568-13b0-11ec-82a8-0242ac130003',
-    name: 'Netherlands',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-netherland-img.png',
-    isVisited: false,
+    optionId: 'TRAVEL',
+    displayText: 'Travel',
   },
   {
-    id: '3c988dec-55e1-477d-a9e2-b354fd559849',
-    name: 'Portugal',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-portugal-img.png',
-    isVisited: false,
-  },
-  {
-    id: 'd766f754-34f7-413e-81ec-9992821b97fa',
-    name: 'Switzerland',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-switzerland-img.png',
-    isVisited: false,
-  },
-  {
-    id: '7ebb4e04-b124-417f-a69e-564a456d70f1',
-    name: 'Thailand',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-thailand-img.png',
-    isVisited: false,
-  },
-  {
-    id: '1e4b1dcd-6ace-4dde-ad8d-675927d5ae47',
-    name: 'United Kingdom',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-united-kingdom-img.png',
-    isVisited: true,
-  },
-  {
-    id: 'e76da8ca-bc48-4981-902b-a4d2d46feb6d',
-    name: 'Venezuela',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/visit-countries-venezuela-img.png',
-    isVisited: false,
+    optionId: 'OTHERS',
+    displayText: 'Others',
   },
 ]
 
 // Replace your code here
 class App extends Component {
-  state = {
-    visitedCountryList: [],
-    isVisitedPlace: initialCountriesList.isVisited,
+  state = {taskList: [], inputTask: '', selectedTag: ''}
+
+  onChageTaskInput = event => {
+    this.setState({inputTask: event.target.value})
   }
 
-  onClickedVisit = currentId => {
-    const clicked = initialCountriesList.filter(each => each.id === currentId)
-    return this.setState({isVisitedPlace: true})
+  onChangeSelectedTag = event => {
+    const {selectedTag} = this.state
+    this.setState({selectedTag: event.target.value})
+    console.log(selectedTag)
   }
 
-  renderedVisitedList = () => {
-    const resultOfList = initialCountriesList.filter(
-      each => each.isVisited === true,
-    )
-    return resultOfList
+  onClickSubmit = event => {
+    event.preventDefault()
+    const {inputTask, selectedTag} = this.state
+    const updateTask = {
+      id: uuidv4(),
+      optionId: tagsList.optionId,
+      taskTitle: inputTask,
+      tagsName: selectedTag,
+    }
+    this.setState(prevState => ({
+      taskList: [...prevState.taskList, updateTask],
+      inputTask: '',
+    }))
   }
 
   render() {
-    const resultOfList = this.renderedVisitedList()
-    const {visitedCountryList} = this.state
-
+    const {taskList, inputTask} = this.state
     return (
       <div className="main-container">
-        <div className="main-heading">Countries</div>
-        <ul className="top-container">
-          {initialCountriesList.map(eachCountry => (
-            <AllCountryList
-              countryDetails={eachCountry}
-              key={eachCountry.id}
-              onClickedVisit={this.onClickedVisit}
-            />
-          ))}
-        </ul>
-        <div className="main-heading">Visited Countries</div>
-        <ul className="bottom-container">
-          {resultOfList.map(eachVisit => (
-            <VisitedCountryList
-              visitedCountryDetails={eachVisit}
-              key={eachVisit.id}
-            />
-          ))}
-        </ul>
+        <form className="left-container" onSubmit={this.onClickSubmit}>
+          <h1 className="main-heading">Create a task!</h1>
+          <label className="label" htmlFor="taskName">
+            Task
+          </label>
+          <input
+            className="input"
+            type="text"
+            id="taskName"
+            value={inputTask}
+            placeholder="Enter the task here"
+            onChange={this.onChageTaskInput}
+          />
+          <label htmlFor="tageCategory" className="label">
+            Tags
+          </label>
+          <select id="tageCategory" className="input">
+            <option onChange={this.onChangeSelectedTag} value="Health">
+              Health
+            </option>
+            <option onChange={this.onChangeSelectedTag} value="Education">
+              Education
+            </option>
+            <option>Entertainment</option>
+            <option>Sport</option>
+            <option>Travel</option>
+            <option>Others</option>
+          </select>
+          <button className="Add-button" type="submit">
+            Add Task
+          </button>
+        </form>
+        <div className="right-container">
+          <h1 className="tag-heading">Tag</h1>
+          <ul className="unorderButtonTag">
+            {tagsList.map(eachButton => (
+              <TagsButton
+                tagButtonDetails={eachButton}
+                key={eachButton.optionId}
+                onClickTagButton={this.onClickTagButton}
+              />
+            ))}
+          </ul>
+          <h1 className="tag-heading">Tasks</h1>
+          <div className="list-container">
+            {taskList.length === 0 ? (
+              <p className="notask">No Tasks Added Yet</p>
+            ) : (
+              <ul className="task-list-container">
+                {taskList.map(each => (
+                  <TasksLists key={each.id} taskDetail={each} />
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
     )
   }
 }
-export default App
 
-//  this.setState(preState => ({
-//     visitedCountryList: [...preState.visitedCountryList, resultOfListS],
-//    }))
+export default App
 
 
 
@@ -148,157 +146,155 @@ body {
 }
 
 .main-container {
-  color: #f8fafc;
-  background-color: #161624;
-  padding: 50px;
-  padding-top: 20px;
+  display: flex;
   height: 100vh;
   width: 100vw;
   font-family: 'Roboto';
-  font-size: 14px;
 }
-.bottom-container {
-  list-style: none;
-  width: 90vw;
-
-  padding-left: 0px;
+.left-container {
+  width: 40%;
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #1a171d;
+  padding: 50px;
 }
-.top-container {
-  list-style: none;
-  width: 90vw;
-  height: 30vh;
-  border: 1px solid #334155;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  overflow-y: scroll;
-  padding-left: 0px;
+
+.right-container {
+  width: 60%;
+  background-color: #000000;
+  color: #f8f8f8;
+  padding: 40px;
 }
 
 .main-heading {
-  font-size: 25px;
+  color: #f3aa4e;
+  font-size: 30px;
+  padding-bottom: 10px;
 }
+
+.label {
+  font-size: 15px;
+  align-self: flex-start;
+  color: #ffffff;
+  padding: 10px;
+}
+
+.input {
+  width: 30vw;
+  height: 40px;
+  margin-bottom: 30px;
+}
+
+.Add-button {
+  color: #f8f8f8;
+  background-color: #f3aa4e;
+  height: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: 0px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.tag-heading {
+  font-size: 20px;
+}
+
+.unorderButtonTag {
+  display: flex;
+  padding-left: 0px;
+}
+
+.notask {
+  font-size: 20px;
+  text-align: center;
+  padding: 15%;
+}
+
+.task-list-container {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+}
+
 
 
 
 import './index.css'
 
-const AllCountryList = props => {
-  const {countryDetails, onClickedVisit} = props
-  const {name, isVisited, id} = countryDetails
-
-  const onClickVisited = () => {
-    onClickedVisit(id)
-  }
-
-  const visitedOrNot = isVisited ? 'Visited' : 'Visit'
+const TagsButton = props => {
+  const {tagButtonDetails, onClickTagButton} = props
+  const {displayText, optionId} = tagButtonDetails
 
   return (
-    <li className="orderedList">
-      <p className="name-para">{name}</p>
-      <button
-        className={` ${visitedOrNot}`}
-        type="submit"
-        onClick={onClickVisited}
-      >
-        {visitedOrNot}
+    <li className="orderList">
+      <button className="clicked-button" type="button">
+        {displayText}
       </button>
     </li>
   )
 }
 
-export default AllCountryList
+export default TagsButton
 
 
-.orderedList {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1f1f2f;
-  padding-left: 30px;
-  border: 1px solid #334155;
+
+.orderList {
+  list-style: none;
+  margin-right: 10px;
 }
 
-.Visit {
-  height: 30px;
-  padding-right: 20px;
-  padding-left: 20px;
-  margin-right: 30px;
-  color: #ffffff;
-  background-color: #3b82f6;
-  border-radius: 4px;
-  border: none;
-}
-
-.Visited {
+.clicked-button {
+  color: #f8f8f8;
   background-color: transparent;
-  border: none;
-  margin-right: 30px;
-  color: #94a3b8;
+  border: 1px solid #f3aa4e;
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 20px;
 }
 
 
 
 import './index.css'
 
-const VisitedCountryList = props => {
-  const {visitedCountryDetails} = props
-  const {name, id, imageUrl, isVisited} = visitedCountryDetails
-
+const TasksLists = props => {
+  const {taskDetail} = props
+  const {taskTitle, tagsName} = taskDetail
   return (
-    <li className="orderedVisitList">
-      <img src={imageUrl} alt="thumbnail" className="country-Image" />
-      <div className="bottom-visit-container">
-        <p className="countryName">{name}</p>
-        <button
-          className="button"
-          type="button"
-          // onClick={onClickRemoveButton}
-        >
-          Remove
-        </button>
-      </div>
+    <li className="list-task">
+      <p className="task-para">{taskTitle}</p>
+      <button className="button" type="button">
+        {tagsName}
+      </button>
     </li>
   )
 }
 
-export default VisitedCountryList
+export default TasksLists
 
 
 
-.country-Image {
-  height: 100px;
-  width: 100%;
-}
-
-.orderedVisitList {
-  display: flex;
-  flex-direction: column;
-  width: 28vw;
-  background-color: #1f1f2f;
+.list-task {
   margin-bottom: 10px;
-  margin-right: 10px;
-}
-
-.bottom-visit-container {
+  height: 50px;
+  width: 53vw;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: #1a171d;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.countryName {
-  font-size: 13px;
-  color: #f1f5f9;
 }
 
 .button {
-  color: #f1f5f9;
-  font-size: 11px;
-  background-color: #161624;
-  border: 1px solid #94a3b8;
-  border-radius: 4px;
-  padding: 4px;
+  color: #f8f8f8;
+  background-color: #f3aa4e;
+  border: none;
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 20px;
 }
