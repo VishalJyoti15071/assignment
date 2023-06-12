@@ -1,143 +1,55 @@
 import {Component} from 'react'
-import {v4 as uuidv4} from 'uuid'
-import TagsButton from './components/Tags'
-import TasksLists from './components/Tasks'
+import Loader from 'react-loader-spinner'
+import ListOfPlaces from './components/Place'
 
 import './App.css'
 
-// These are the lists used in the application. You can move them to any component needed.
-
-const tagsList = [
-  {
-    optionId: 'HEALTH',
-    displayText: 'Health',
-  },
-  {
-    optionId: 'EDUCATION',
-    displayText: 'Education',
-  },
-  {
-    optionId: 'ENTERTAINMENT',
-    displayText: 'Entertainment',
-  },
-  {
-    optionId: 'SPORTS',
-    displayText: 'Sports',
-  },
-  {
-    optionId: 'TRAVEL',
-    displayText: 'Travel',
-  },
-  {
-    optionId: 'OTHERS',
-    displayText: 'Others',
-  },
-]
-
-// Replace your code here
 class App extends Component {
-  state = {taskList: [], inputTask: '', selectedTag: '', filteredList: []}
+  state = {travelDataList: [], isLoading: true}
 
-  onChageTaskInput = event => {
-    this.setState({inputTask: event.target.value})
+  componentDidMount() {
+    this.getFetchedApiData()
   }
 
-  onChangeSelectedTag = event => {
-    const {selectedTag} = this.state
-    this.setState({selectedTag: event.target.value})
-  }
+  getFetchedApiData = async () => {
+    const response = await fetch(' https://apis.ccbp.in/tg/packages')
+    const data = await response.json()
 
-  onClickSubmit = event => {
-    event.preventDefault()
-    const {inputTask, selectedTag} = this.state
-    const updateTask = {
-      id: uuidv4(),
-      optionId: tagsList.optionId,
-      taskTitle: inputTask,
-      tagsName: selectedTag,
-    }
-    this.setState(prevState => ({
-      taskList: [...prevState.taskList, updateTask],
-      inputTask: '',
+    const updateData = data.packages.map(each => ({
+      id: each.id,
+      about: each.description,
+      imgUrl: each.image_url,
+      title: each.name,
     }))
-  }
 
-  onClickTagButton = tagId => {
-    const {taskList} = this.state
-    this.setState(prevState => ({
-      taskList: prevState.taskList.map(each => {
-        if (each.optionId === tagId) {
-          return each
-        }
-      }),
-    }))
+    this.setState({travelDataList: updateData, isLoading: false})
   }
 
   render() {
-    const {taskList, inputTask} = this.state
+    const {travelDataList, isLoading} = this.state
+
     return (
       <div className="main-container">
-        <form className="left-container" onSubmit={this.onClickSubmit}>
-          <h1 className="main-heading">Create a task!</h1>
-          <label className="label" htmlFor="taskName">
-            Task
-          </label>
-          <input
-            className="input"
-            type="text"
-            id="taskName"
-            value={inputTask}
-            placeholder="Enter the task here"
-            onChange={this.onChageTaskInput}
-          />
-          <label htmlFor="tageCategory" className="label">
-            Tags
-          </label>
-          <select
-            id="tageCategory"
-            className="input"
-            onChange={this.onChangeSelectedTag}
-          >
-            {tagsList.map(eachTag => (
-              <option key={eachTag.optionId} value={eachTag.displayText}>
-                {eachTag.displayText}
-              </option>
-            ))}
-          </select>
-          <button className="Add-button" type="submit">
-            Add Task
-          </button>
-        </form>
-        <div className="right-container">
-          <h1 className="tag-heading">Tag</h1>
-          <ul className="unorderButtonTag">
-            {tagsList.map(eachButton => (
-              <TagsButton
-                tagButtonDetails={eachButton}
-                key={eachButton.optionId}
-                onClickTagButton={this.onClickTagButton}
-              />
-            ))}
-          </ul>
-          <h1 className="tag-heading">Tasks</h1>
-          <div className="list-container">
-            {taskList.length === 0 ? (
-              <p className="notask">No Tasks Added Yet</p>
-            ) : (
-              <ul className="task-list-container">
-                {taskList.map(each => (
-                  <TasksLists key={each.id} taskDetail={each} />
-                ))}
-              </ul>
-            )}
+        <h1 className="main-heading">Travel Guide</h1>
+        <hr className="hrLine" />
+        {isLoading ? (
+          <div data-testid="loader">
+            <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
           </div>
-        </div>
+        ) : (
+          <div className="container">
+            {travelDataList.map(eachPlace => (
+              <ListOfPlaces placeDetails={eachPlace} key={eachPlace.id} />
+            ))}
+          </div>
+        )}
       </div>
     )
   }
 }
 
 export default App
+
 
 
 
@@ -155,159 +67,56 @@ body {
 }
 
 .main-container {
-  display: flex;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   width: 100vw;
-  font-family: 'Roboto';
-}
-.left-container {
-  width: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  background-color: #1a171d;
-  padding: 50px;
+  font-family: 'Roboto';
+  background-color: #eef4f7;
+}
+.hrLine {
+  width: 175px;
+  border: 2px solid #52bbf0;
+  margin-top: 0px;
 }
 
-.right-container {
-  width: 60%;
-  background-color: #000000;
-  color: #f8f8f8;
-  padding: 40px;
-}
-
-.main-heading {
-  color: #f3aa4e;
-  font-size: 30px;
-  padding-bottom: 10px;
-}
-
-.label {
-  font-size: 15px;
-  align-self: flex-start;
-  color: #ffffff;
-  padding: 10px;
-}
-
-.input {
-  width: 30vw;
-  height: 40px;
-  margin-bottom: 30px;
-}
-
-.Add-button {
-  color: #f8f8f8;
-  background-color: #f3aa4e;
-  height: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
-  border: 0px;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.tag-heading {
-  font-size: 20px;
-}
-
-.unorderButtonTag {
+.container {
+  height: 100%;
   display: flex;
-  padding-left: 0px;
-}
-
-.notask {
-  font-size: 20px;
-  text-align: center;
-  padding: 15%;
-}
-
-.task-list-container {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  padding-left: 0px;
+  flex-wrap: wrap;
+  margin: 40px;
 }
 
 
 
 import './index.css'
 
-const TagsButton = props => {
-  const {tagButtonDetails, onClickTagButton} = props
-  const {displayText, optionId} = tagButtonDetails
-
-  const buttonClickes = () => {
-    onClickTagButton(optionId)
-  }
+const ListOfPlaces = props => {
+  const {placeDetails} = props
+  const {title, about, imgUrl} = placeDetails
 
   return (
-    <li className="orderList">
-      <button className="clicked-button" type="button" onClick={buttonClickes}>
-        {displayText}
-      </button>
-    </li>
+    <div className="flexBoxes">
+      <img src={imgUrl} alt={title} className="image" />
+      <h1 className="heading">{title}</h1>
+      <p className="paragraph">{about}</p>
+    </div>
   )
 }
 
-export default TagsButton
+export default ListOfPlaces
 
 
 
 
-.orderList {
-  list-style: none;
-  margin-right: 10px;
+.image {
+  width: 100%;
 }
 
-.clicked-button {
-  color: #f8f8f8;
-  background-color: transparent;
-  border: 1px solid #f3aa4e;
-  height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 20px;
-}
-
-
-
-import './index.css'
-
-const TasksLists = props => {
-  const {taskDetail} = props
-  const {taskTitle, tagsName} = taskDetail
-  return (
-    <li className="list-task">
-      <p className="task-para">{taskTitle}</p>
-      <button className="button" type="button">
-        {tagsName}
-      </button>
-    </li>
-  )
-}
-
-export default TasksLists
-
-
-
-.list-task {
-  margin-bottom: 10px;
-  height: 50px;
-  width: 53vw;
-  padding-left: 30px;
-  padding-right: 30px;
-  background-color: #1a171d;
-  display: flex;
-  justify-content: space-between;
-}
-
-.button {
-  color: #f8f8f8;
-  background-color: #f3aa4e;
-  border: none;
-  height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 20px;
+.flexBoxes {
+  width: 45%;
+  background-color: #ffffff;
+  margin: 20px;
 }
